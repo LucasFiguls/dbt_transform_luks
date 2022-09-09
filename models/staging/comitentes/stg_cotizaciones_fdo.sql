@@ -6,10 +6,10 @@ with
     (
         select
             cast(_airbyte_data ->> 'Fecha' as TimeStamp) as "fecha",
-            cast(_airbyte_data ->> 'Cotizacion' as decimal) as "cotizacion",
-            _airbyte_data ->> 'CodFondo' as "codfondo",
-            _airbyte_data ->> 'CodCotizacionFdo' as "codcotizacionfdo",
-            cast(_airbyte_data ->> 'EstaAnulado' as integer) as "estaanulado"
+            cast(_airbyte_data -> 'Cotizacion' as decimal) as "cotizacion",
+            cast(_airbyte_data -> 'CodFondo' as integer) as "codfondo",
+            cast(_airbyte_data -> 'CodCotizacionFdo' as integer) as "codcotizacionfdo",
+            cast(_airbyte_data -> 'EstaAnulado' as integer) as "estaanulado"
             
         from {{ source
     ('src_raw_vbmaxcapital', '_airbyte_raw_cotizacionesfdo') }}

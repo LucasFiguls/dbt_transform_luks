@@ -5,7 +5,7 @@ with
     as
     (
         select
-            _airbyte_data ->> 'CodEmisor' as "codemisor", 
+            cast(_airbyte_data -> 'CodEmisor' as integer) as "codemisor", 
             _airbyte_data ->> 'Descripcion' as "descripcion"
         from {{ source
     ('src_raw_vbmaxcapital', '_airbyte_raw_emisores') }}

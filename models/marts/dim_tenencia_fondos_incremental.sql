@@ -1,4 +1,5 @@
-{{ config(materialized='table') }}
+{{ config(materialized='incremental') }}
+--no defino una unique_key ya que el modelo corré a diario y todos las filas deben apendear. 
 
 with
   ctascorrientesfdo as (
@@ -52,7 +53,7 @@ with
 
   final as (
     SELECT
-        '2022-08-28' as Fecha,
+        cast('{{ var('var_current_date_manual') }}' as DATE)  as Fecha,
         fondo.Descripcion as nombreFondo,
         c.NumComitente as numComitente,
         SUM(ctaCteFondo.Cantidad) as CantidadCuotaparte,
@@ -66,16 +67,17 @@ with
       JOIN cotizacionesfdo cotizacion on cotizacion.CodFondo = ctaCteFondo.CodFondo
       JOIN (select max(c2.CodCotizacionFdo) as CodCotizacionFdo, c2.CodFondo
       FROM cotizacionesfdo c2
-        WHERE c2.estaanulado = 0 AND c2.Fecha <= '2022-08-28'
+        WHERE c2.estaanulado = 0 AND c2.Fecha <= '{{ var('var_current_date_manual') }}'
         GROUP BY c2.CodFondo) ultimaCotizacion ON ultimaCotizacion.CodCotizacionFdo = cotizacion.CodCotizacionFdo
         JOIN fondos fondo ON fondo.CodFondo = cotizacion.CodFondo
       JOIN comitentes c on c.CodComitente = ctaCteFondo.CodComitenteRel
       JOIN emisores e on e.CodEmisor = fondo.CodEmisor
       JOIN monedas m on ctaCteFondo.CodMoneda = m.CodMoneda
       WHERE ctaCte.EstaAnulado = 0
-AND cotizacion.EstaAnulado = 0
-AND fondo.EstaAnulado = 0
-AND ctaCteFondo.FechaLiquidacion <= '2022-08-28'
+      AND cotizacion.EstaAnulado = 0
+      AND fondo.EstaAnulado = 0
+      AND ctaCteFondo.FechaLiquidacion <= '{{ var('var_current_date_manual') }}'
+  
 GROUP BY
   fondo.Descripcion,
   c.NumComitente,

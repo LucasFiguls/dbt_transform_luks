@@ -5,9 +5,9 @@ with
     as
     (
         select
-            _airbyte_data ->> 'CodTpCtaBancaria' as "codtpctabancaria",
+            cast(_airbyte_data -> 'CodTpCtaBancaria' as integer) as "codtpctabancaria",
             _airbyte_data ->> 'Descripcion' as "descripcion",
-            cast(_airbyte_data ->> 'EstaAnulado' as integer) as "estaanulado"
+            cast(_airbyte_data -> 'EstaAnulado' as integer) as "estaanulado"
         from {{ source
     ('src_raw_vbmaxcapital', '_airbyte_raw_tpctabancaria') }}
 )

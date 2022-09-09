@@ -5,11 +5,11 @@ with
     as
     (
         select
-            _airbyte_data ->> 'CodComitente' as "codcomitente", 
-            _airbyte_data ->> 'NumComitente' as "numcomitente", 
+            cast(_airbyte_data -> 'CodComitente' as integer) as "codcomitente", 
+            cast(_airbyte_data -> 'NumComitente' as integer) as "numcomitente", 
             _airbyte_data ->> 'Descripcion' as "descripcion", 
             _airbyte_data ->> 'EmailsInfo' as "emailsinfo",
-            cast(_airbyte_data ->> 'EstaAnulado' as integer) as "estaanulado"
+            cast(_airbyte_data -> 'EstaAnulado' as integer) as "estaanulado"
         from {{ source
     ('src_raw_vbmaxcapital', '_airbyte_raw_comitentes') }}
 )

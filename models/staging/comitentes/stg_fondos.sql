@@ -5,11 +5,11 @@ with
     as
     (
         select
-            _airbyte_data ->> 'CodFondo' as "codfondo",
-            _airbyte_data ->> 'CodEmisor' as "codemisor",
+            cast(_airbyte_data -> 'CodFondo' as integer) as "codfondo",
+            cast(_airbyte_data -> 'CodEmisor' as integer) as "codemisor",
             _airbyte_data ->> 'Descripcion' as "descripcion",
-            cast(_airbyte_data ->> 'PlazoResc' as integer)  as "plazoresc",
-            cast(_airbyte_data ->> 'EstaAnulado' as integer) as "estaanulado"
+            cast(_airbyte_data -> 'PlazoResc' as integer)  as "plazoresc",
+            cast(_airbyte_data -> 'EstaAnulado' as integer) as "estaanulado"
         from {{ source
     ('src_raw_vbmaxcapital', '_airbyte_raw_fondos') }}
 )

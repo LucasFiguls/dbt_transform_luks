@@ -4,11 +4,11 @@ with
     as
     (
         select
-            _airbyte_data ->> 'CodComitenteRel' as "codcomitenterel",
-            _airbyte_data ->> 'CodFondo' as "codfondo",
-            _airbyte_data ->> 'CodMoneda' as "codmoneda",
-            cast(_airbyte_data ->> 'Cantidad' as decimal) as "cantidad",
-            _airbyte_data ->> 'CodCtaCorriente' as "codctacorriente",
+            cast(_airbyte_data -> 'CodComitenteRel' as integer) as "codcomitenterel",
+            cast(_airbyte_data -> 'CodFondo' as integer) as "codfondo",
+            cast(_airbyte_data -> 'CodMoneda' as integer) as "codmoneda",
+            cast(_airbyte_data -> 'Cantidad' as decimal) as "cantidad",
+            cast(_airbyte_data -> 'CodCtaCorriente' as integer) as "codctacorriente",
             cast(_airbyte_data ->> 'FechaLiquidacion' as TimeStamp) as "fechaliquidacion"
         from {{ source
     ('src_raw_vbmaxcapital', '_airbyte_raw_ctascorrientesfdo') }}

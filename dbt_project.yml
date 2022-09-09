@@ -8,6 +8,12 @@ config-version: 2
 # This setting configures which "profile" dbt uses for this project.
 profile: "miDwhDbt"
 
+vars:
+  # The `start_date` variable will be accessible in all resources
+  "var_current_date": '{{ run_started_at.strftime("%Y-%m-%d") }}'
+  # Seteo en null para que falle la invocación, ya que lo esperado en setear la var de fecha al momento de ejecución.
+  "var_current_date_manual": ""
+
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
 # found in the "models/" directory. You probably won't need to change these!
