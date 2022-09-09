@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: stg_comitentes
+    description: 1 unico comitente por fila
+    columns:
+      - name: codcomitente
+        description: '{{ doc("comitentes")}}'
+        tests:
+          - not_null
